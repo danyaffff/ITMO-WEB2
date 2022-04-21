@@ -16,14 +16,34 @@ let IndexController = class IndexController {
     getIndex() {
         return;
     }
+    getTodo() {
+        return;
+    }
+    getUsers() {
+        return;
+    }
 };
 __decorate([
-    (0, common_1.Get)(),
-    (0, common_1.Render)('index'),
+    (0, common_1.Get)('index'),
+    (0, common_1.Render)('index.hbs'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], IndexController.prototype, "getIndex", null);
+__decorate([
+    (0, common_1.Get)('todo'),
+    (0, common_1.Render)('todo'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], IndexController.prototype, "getTodo", null);
+__decorate([
+    (0, common_1.Get)('users'),
+    (0, common_1.Render)('users'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], IndexController.prototype, "getUsers", null);
 IndexController = __decorate([
     (0, common_1.UseInterceptors)(new app_interceptor_1.LoggingInterceptor()),
     (0, common_1.Controller)()
