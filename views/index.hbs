@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  {{> head }}
+</head>
+<body>
+
+<nav style="background: green">
+  <ul class="nav__menu__left">
+    <li>
+      <a href="#" class="nav__menu__active">Я!</a>
+    </li>
+  </ul>
+  <ul class="nav__menu__right">
+    <li><a href="todo.html">TODO</a></li>
+    <li><a href="users.html">Users</a></li>
+  </ul>
+</nav>
+
+<main style="background: pink">
+  <img alt="Это я" src="https://sun9-76.userapi.com/impg/6ragMQ2R9U3D3uSZk2_XKg5YU6uE8o2vs67acA/RIrkspKyRDU.jpg?size=1024x1024&quality=95&sign=847f928935fa21bea49bda11e3af327e&type=album" class="img__avatar">
+
+  <div class="div__about_me" style="background: blue">
+    <p class="p__me">Я — Даниил Храповицкий!</p>
+
+    <div class="div__right" title="Маяковский!">
+            <pre class="pre__mayak">
+Глазами взвила ввысь стрелу.
+Улыбку убери твою!
+А сердце рвётся к выстрелу,
+а горло бредит бритвою.</pre>
+    </div>
+
+    <p class="p__about_me">
+      Middle iOS-разработчик
+    </p>
+
+    <table>
+      <tr>
+        <td>
+          <p class="p__about_me">
+            - <span class="span__sixhands">Sixhands</span> (20.12.2020—17.09.2021)
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p class="p__about_me">
+            - <span class="span__clever">Clever</span><span class="span__pumpkin">Pumpkin</span> (20.09.2021—...)
+          </p>
+        </td>
+      </tr>
+    </table>
+  </div>
+</main>
+
+<img src="https://i.pinimg.com/originals/0e/60/dd/0e60dda3fe5a8311e850e908787653b6.png" class="img__cat" title="Это тоже я!" alt="Тут котик я">
+
+<footer>
+  {{> footer }}
+</footer>
+
+</body>
+</html>
