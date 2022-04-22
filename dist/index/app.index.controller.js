@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.IndexController = void 0;
 const common_1 = require("@nestjs/common");
 const app_interceptor_1 = require("../app.interceptor");
+const swagger_1 = require("@nestjs/swagger");
 let IndexController = class IndexController {
     getIndex() {
         return;
@@ -31,6 +32,13 @@ let IndexController = class IndexController {
     }
 };
 __decorate([
+    (0, swagger_1.ApiOperation)({
+        summary: 'Get index.hbs',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'OK',
+    }),
     (0, common_1.Get)(),
     (0, common_1.Render)('index'),
     __metadata("design:type", Function),
@@ -38,6 +46,21 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], IndexController.prototype, "getIndex", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({
+        summary: 'Get index.hbs with authentication state',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'OK',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 400,
+        description: 'Почему-то не работает :(',
+    }),
+    (0, swagger_1.ApiParam)({
+        name: 'logged',
+        type: 'boolean',
+    }),
     (0, common_1.Get)('authy'),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Query)('logged', common_1.ParseBoolPipe)),
@@ -46,6 +69,13 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], IndexController.prototype, "getIndexWithAuth", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({
+        summary: 'Get page where you can create TODO notes',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'OK',
+    }),
     (0, common_1.Get)('todo'),
     (0, common_1.Render)('todo'),
     __metadata("design:type", Function),
@@ -53,6 +83,13 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], IndexController.prototype, "getTodo", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({
+        summary: 'Get page where you can load users',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'OK',
+    }),
     (0, common_1.Get)('users'),
     (0, common_1.Render)('users'),
     __metadata("design:type", Function),
@@ -60,6 +97,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], IndexController.prototype, "getUsers", null);
 IndexController = __decorate([
+    (0, swagger_1.ApiTags)('Index'),
     (0, common_1.UseInterceptors)(new app_interceptor_1.LoggingInterceptor()),
     (0, common_1.Controller)()
 ], IndexController);
