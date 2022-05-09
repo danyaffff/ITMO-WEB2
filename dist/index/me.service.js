@@ -10,11 +10,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MeService = void 0;
-const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma.service");
+const common_1 = require("@nestjs/common");
 let MeService = class MeService {
     constructor(prisma) {
         this.prisma = prisma;
+    }
+    async getWorkplaces() {
+        return this.prisma.workPlace.findMany();
+    }
+    async addWorkplace(workplace) {
+        console.log('sent:', workplace);
+        this.prisma.workPlace
+            .create({ data: workplace })
+            .then((newWorkplace) => console.log('created:', newWorkplace));
+    }
+    async deleteWorkplace(name) {
+        console.log('deleting:', name);
+        this.prisma.workPlace
+            .findFirst({
+            where: { name: name },
+        })
+            .then((workplace) => {
+            console.log('for delete:', workplace);
+            return workplace;
+        })
+            .then((workplace) => {
+            if (workplace != null) {
+                this.prisma.workPlace
+                    .delete({ where: { id: workplace.id } })
+                    .then((workplace) => console.log('deleted:', workplace));
+            }
+        });
     }
 };
 MeService = __decorate([

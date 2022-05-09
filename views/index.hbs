@@ -45,20 +45,15 @@
     </p>
 
     <table>
-      <tr>
-        <td>
-          <p class="p__about_me">
-            - <span class="span__sixhands">Sixhands</span> (20.12.2020—17.09.2021)
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p class="p__about_me">
-            - <span class="span__clever">Clever</span><span class="span__pumpkin">Pumpkin</span> (20.09.2021—...)
-          </p>
-        </td>
-      </tr>
+      {{#each workplaces}}
+        <tr>
+          <td>
+            <p class="p__about_me">
+              - <a href="{{this.link}}">{{this.name}}</a> ({{this.fromDate}}—{{this.toDate}})
+            </p>
+          </td>
+        </tr>
+      {{/each}}
     </table>
   </div>
 </main>

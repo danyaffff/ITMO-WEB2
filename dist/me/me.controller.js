@@ -20,7 +20,7 @@ let MeController = class MeController {
     constructor(meService) {
         this.meService = meService;
     }
-    getMeInformation() {
+    getAllPosts() {
         throw new common_1.NotImplementedException();
     }
     addInformation() {
@@ -32,7 +32,7 @@ let MeController = class MeController {
 };
 __decorate([
     (0, swagger_1.ApiOperation)({
-        summary: 'Get information about me',
+        summary: 'Get all posts',
     }),
     (0, swagger_1.ApiResponse)({
         status: 501,
@@ -42,7 +42,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], MeController.prototype, "getMeInformation", null);
+], MeController.prototype, "getAllPosts", null);
 __decorate([
     (0, swagger_1.ApiOperation)({
         summary: 'Add a new information',
