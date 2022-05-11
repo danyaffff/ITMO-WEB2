@@ -6,18 +6,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MeModule = void 0;
+exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
-const me_controller_1 = require("./me.controller");
-const me_service_1 = require("./me.service");
 const prisma_service_1 = require("../prisma.service");
-let MeModule = class MeModule {
+const auth_controller_1 = require("./auth.controller");
+const auth_service_1 = require("./auth.service");
+const jwt_1 = require("@nestjs/jwt");
+let AuthModule = class AuthModule {
 };
-MeModule = __decorate([
+AuthModule = __decorate([
     (0, common_1.Module)({
-        controllers: [me_controller_1.MeController],
-        providers: [me_service_1.MeService, prisma_service_1.PrismaService],
+        imports: [
+            jwt_1.JwtModule.register({
+                secret: process.env.PRIVATE_KEY || 'secret',
+                signOptions: {
+                    expiresIn: '1d'
+                }
+            })
+        ],
+        controllers: [auth_controller_1.AuthController],
+        providers: [auth_service_1.AuthService, prisma_service_1.PrismaService],
+        exports: [jwt_1.JwtModule]
     })
-], MeModule);
-exports.MeModule = MeModule;
-//# sourceMappingURL=me.module.js.map
+], AuthModule);
+exports.AuthModule = AuthModule;
+//# sourceMappingURL=auth.module.js.map

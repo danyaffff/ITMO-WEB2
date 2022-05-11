@@ -2,19 +2,30 @@ import { IsNotEmpty, IsString, IsUrl } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class WorkPlaceDto {
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Название WorkPlace'
+  })
   @IsNotEmpty()
   @IsString()
   readonly name: string;
-  @ApiProperty()
+
+  @ApiProperty({
+    description: 'Дата начала работы'
+  })
   @IsNotEmpty()
   @IsString()
   readonly fromDate: string;
-  @ApiProperty()
+
+  @ApiProperty({
+    description: 'Дата окончания работы'
+  })
   @IsNotEmpty()
   @IsString()
   readonly toDate: string;
-  @ApiProperty()
+
+  @ApiProperty({
+    description: 'Ссылка на сайт'
+  })
   @IsUrl()
   @IsString()
   readonly link: string;

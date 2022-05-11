@@ -5,16 +5,20 @@ import { WorkPlaceDto } from './workplace.dto';
 
 @Injectable()
 export class MeService {
+
   constructor(private prisma: PrismaService) {}
+
   async getWorkplaces(): Promise<WorkPlace[]> {
     return this.prisma.workPlace.findMany();
   }
+
   async addWorkplace(workplace: WorkPlaceDto) {
     console.log('sent:', workplace);
     this.prisma.workPlace
       .create({ data: workplace })
       .then((newWorkplace) => console.log('created:', newWorkplace));
   }
+
   async deleteWorkplace(name: string) {
     console.log('deleting:', name);
     this.prisma.workPlace

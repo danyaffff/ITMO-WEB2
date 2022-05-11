@@ -1,5 +1,5 @@
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Render, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Render, UseGuards, UseInterceptors } from '@nestjs/common';
 import { LoggingInterceptor } from '../app.interceptor';
 
 @ApiTags('ToDo')

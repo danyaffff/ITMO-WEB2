@@ -17,3 +17,9 @@ model WorkPlace {
   toDate   String
   link     String
 }
+
+model User {
+  id       Int      @default(autoincrement()) @id
+  email    String
+  password String
+}

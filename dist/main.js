@@ -5,12 +5,18 @@ const app_module_1 = require("./app.module");
 const path_1 = require("path");
 const swagger_1 = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
+const cookieParser = require("cookie-parser");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    app.use(cookieParser());
     app.useStaticAssets((0, path_1.join)(__dirname, '..', 'public'));
     app.setBaseViewsDir((0, path_1.join)(__dirname, '..', 'views'));
     app.setViewEngine('hbs');
     app.useGlobalPipes(new common_1.ValidationPipe());
+    app.enableCors({
+        origin: 'http://localhost:8080',
+        credentials: true
+    });
     const hbs = require('hbs');
     hbs.registerPartials((0, path_1.join)(__dirname, '..', 'views', 'partials'));
     const config = new swagger_1.DocumentBuilder()

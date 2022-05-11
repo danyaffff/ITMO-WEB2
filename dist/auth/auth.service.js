@@ -9,44 +9,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MeService = void 0;
-const prisma_service_1 = require("../prisma.service");
+exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-let MeService = class MeService {
+const prisma_service_1 = require("../prisma.service");
+const bcrypt = require("bcrypt");
+let AuthService = class AuthService {
     constructor(prisma) {
         this.prisma = prisma;
+        this.salt = 12;
     }
-    async getWorkplaces() {
-        return this.prisma.workPlace.findMany();
+    async users() {
+        return await this.prisma.user.findMany();
     }
-    async addWorkplace(workplace) {
-        console.log('sent:', workplace);
-        this.prisma.workPlace
-            .create({ data: workplace })
-            .then((newWorkplace) => console.log('created:', newWorkplace));
+    async login(email) {
+        return await this.prisma.user.findFirst({ where: { email: email } });
     }
-    async deleteWorkplace(name) {
-        console.log('deleting:', name);
-        this.prisma.workPlace
-            .findFirst({
-            where: { name: name },
-        })
-            .then((workplace) => {
-            console.log('for delete:', workplace);
-            return workplace;
-        })
-            .then((workplace) => {
-            if (workplace != null) {
-                this.prisma.workPlace
-                    .delete({ where: { id: workplace.id } })
-                    .then((workplace) => console.log('deleted:', workplace));
+    async register(email, password) {
+        return this.prisma.user
+            .create({
+            data: {
+                email: email,
+                password: await bcrypt.hash(password, this.salt)
             }
         });
     }
+    async delete(id) {
+        return await this.prisma.user.delete({ where: { id: id } });
+    }
 };
-MeService = __decorate([
+AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
-], MeService);
-exports.MeService = MeService;
-//# sourceMappingURL=me.service.js.map
+], AuthService);
+exports.AuthService = AuthService;
+//# sourceMappingURL=auth.service.js.map

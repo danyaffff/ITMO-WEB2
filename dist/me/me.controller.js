@@ -14,69 +14,106 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MeController = void 0;
 const common_1 = require("@nestjs/common");
-const me_service_1 = require("./me.service");
+const app_interceptor_1 = require("../app.interceptor");
 const swagger_1 = require("@nestjs/swagger");
+const me_service_1 = require("./me.service");
+const workplace_dto_1 = require("./workplace.dto");
 let MeController = class MeController {
     constructor(meService) {
         this.meService = meService;
     }
-    getAllPosts() {
-        throw new common_1.NotImplementedException();
+    showMe(response, logged = false) {
+        this.meService
+            .getWorkplaces()
+            .then((workplaces) => {
+            console.log(workplaces);
+            return workplaces;
+        })
+            .then((workplaces) => {
+            console.log('workplaces:', workplaces);
+            console.log('is logged:', logged);
+            response.render('index', { workplaces: workplaces, logged: logged });
+        });
     }
-    addInformation() {
-        throw new common_1.NotImplementedException();
+    createWorkplace(workplace) {
+        this.meService.addWorkplace(workplace);
     }
-    delete(id) {
-        throw new common_1.NotImplementedException();
+    deleteWorkplace(name) {
+        if (name != null) {
+            this.meService.deleteWorkplace(name);
+        }
+        else {
+            throw new common_1.HttpException('name is incorrect', common_1.HttpStatus.BAD_REQUEST);
+        }
     }
 };
 __decorate([
     (0, swagger_1.ApiOperation)({
-        summary: 'Get all posts',
+        summary: 'Get page about Danya',
     }),
     (0, swagger_1.ApiResponse)({
-        status: 501,
-        description: 'Not implemented',
+        status: 200,
+        description: 'OK',
     }),
-    (0, common_1.Get)(),
+    (0, swagger_1.ApiQuery)({
+        name: 'logged',
+        type: 'boolean',
+        required: false,
+    }),
+    (0, common_1.Get)('me'),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Query)('logged', common_1.ParseBoolPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
-], MeController.prototype, "getAllPosts", null);
+], MeController.prototype, "showMe", null);
 __decorate([
     (0, swagger_1.ApiOperation)({
-        summary: 'Add a new information',
+        summary: 'Create new WorkPlace',
     }),
     (0, swagger_1.ApiResponse)({
-        status: 501,
-        description: 'Not implemented',
+        status: 201,
+        description: 'Created successfully',
     }),
-    (0, common_1.Post)(),
+    (0, swagger_1.ApiBody)({
+        type: workplace_dto_1.WorkPlaceDto,
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 400,
+        description: 'Bad request',
+    }),
+    (0, common_1.Post)('workplace'),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [workplace_dto_1.WorkPlaceDto]),
     __metadata("design:returntype", void 0)
-], MeController.prototype, "addInformation", null);
+], MeController.prototype, "createWorkplace", null);
 __decorate([
     (0, swagger_1.ApiOperation)({
-        summary: 'Delete information by id',
+        summary: 'Delete an existing WorkPlace',
     }),
     (0, swagger_1.ApiResponse)({
-        status: 501,
-        description: 'Not implemented',
+        status: 200,
+        description: 'Deleted',
     }),
-    (0, swagger_1.ApiParam)({
-        name: 'id',
-        type: 'int',
+    (0, swagger_1.ApiQuery)({
+        name: 'name',
+        type: 'string',
     }),
-    (0, common_1.Delete)(),
-    __param(0, (0, common_1.Query)('id', common_1.ParseIntPipe)),
+    (0, swagger_1.ApiResponse)({
+        status: 400,
+        description: 'Bad request',
+    }),
+    (0, common_1.Delete)('workplace'),
+    __param(0, (0, common_1.Query)('name')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
-], MeController.prototype, "delete", null);
+], MeController.prototype, "deleteWorkplace", null);
 MeController = __decorate([
     (0, swagger_1.ApiTags)('Me'),
-    (0, common_1.Controller)('me'),
+    (0, common_1.UseInterceptors)(new app_interceptor_1.LoggingInterceptor()),
+    (0, common_1.Controller)(),
     __metadata("design:paramtypes", [me_service_1.MeService])
 ], MeController);
 exports.MeController = MeController;
