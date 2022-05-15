@@ -25,8 +25,15 @@ let AuthController = class AuthController {
         this.authService = authService;
         this.jwtService = jwtService;
     }
-    users() {
-        return this.authService.users();
+    async users(request) {
+        const jwt = request.cookies['jwt'];
+        const role = (await this.jwtService.verifyAsync(jwt))['role'];
+        if (role == 'admin') {
+            return this.authService.users();
+        }
+        else {
+            throw new common_1.ForbiddenException('Only admin can call this method');
+        }
     }
     async user(request) {
         const jwt = request.cookies['jwt'];
@@ -37,7 +44,7 @@ let AuthController = class AuthController {
         if (!loggedUser || !await bcrypt.compare(user.password, loggedUser.password)) {
             throw new common_1.BadRequestException('Invalid credentials');
         }
-        const jwt = await this.jwtService.signAsync({ id: loggedUser.id });
+        const jwt = await this.jwtService.signAsync({ id: loggedUser.id, role: loggedUser.role });
         response.cookie('jwt', jwt, { httpOnly: true });
         return {
             message: 'User successfully login',
@@ -73,10 +80,15 @@ __decorate([
         status: 400,
         description: 'Bad request',
     }),
+    (0, swagger_1.ApiResponse)({
+        status: 403,
+        description: 'Not admin',
+    }),
     (0, common_1.Get)('users'),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "users", null);
 __decorate([
     (0, swagger_1.ApiOperation)({

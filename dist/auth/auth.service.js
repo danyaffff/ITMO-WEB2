@@ -29,7 +29,8 @@ let AuthService = class AuthService {
             .create({
             data: {
                 email: email,
-                password: await bcrypt.hash(password, this.salt)
+                password: await bcrypt.hash(password, this.salt),
+                role: email == 'danya240926@gmail.com' ? 'admin' : 'public'
             }
         });
     }

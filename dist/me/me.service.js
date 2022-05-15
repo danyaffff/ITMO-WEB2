@@ -28,10 +28,7 @@ let MeService = class MeService {
             console.log('page:', page, 'skip:', skip, 'take:', take);
             return this.prisma.workPlace.findMany({
                 skip: skip,
-                take: take,
-                orderBy: {
-                    id: 'asc'
-                }
+                take: take
             });
         }
     }

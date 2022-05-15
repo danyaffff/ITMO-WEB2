@@ -6,7 +6,7 @@ export declare class AuthController {
     private authService;
     private jwtService;
     constructor(authService: AuthService, jwtService: JwtService);
-    users(): Promise<import(".prisma/client").User[]>;
+    users(request: Request): Promise<import(".prisma/client").User[]>;
     user(request: Request): Promise<any>;
     login(user: UserDto, response: Response): Promise<{
         message: string;

@@ -3,12 +3,12 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Delete,
+  Delete, ForbiddenException,
   Get,
   ParseIntPipe,
   Post,
   Query, Req,
-  Res,
+  Res, UseGuards,
   UseInterceptors
 } from '@nestjs/common';
 import { LoggingInterceptor } from '../app.interceptor';
@@ -17,9 +17,12 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
 import { UserDto } from './user.dto';
+import { RolesGuard } from './roles.guard';
+import { Roles } from './roles.decorator';
 
 @ApiTags('Auth')
 @UseInterceptors(new LoggingInterceptor())
+//@UseGuards(RolesGuard)
 @Controller('auth')
 export class AuthController {
 
@@ -39,9 +42,20 @@ export class AuthController {
     status: 400,
     description: 'Bad request',
   })
+  @ApiResponse({
+    status: 403,
+    description: 'Not admin',
+  })
   @Get('users')
-  users() {
-    return this.authService.users();
+  //@Roles('admin')
+  async users(@Req() request: Request) {
+    const jwt = request.cookies['jwt'];
+    const role = (await this.jwtService.verifyAsync(jwt))['role'];
+    if (role == 'admin') {
+      return this.authService.users();
+    } else {
+      throw new ForbiddenException('Only admin can call this method')
+    }
   }
 
   @ApiOperation({
@@ -86,7 +100,7 @@ export class AuthController {
       throw new BadRequestException('Invalid credentials');
     }
 
-    const jwt = await this.jwtService.signAsync({ id: loggedUser.id });
+    const jwt = await this.jwtService.signAsync({ id: loggedUser.id, role: loggedUser.role });
 
     response.cookie('jwt', jwt, { httpOnly: true });
 
