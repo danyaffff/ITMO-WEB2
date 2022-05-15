@@ -22,9 +22,9 @@ let MeController = class MeController {
     constructor(meService) {
         this.meService = meService;
     }
-    showMe(response, logged = false) {
+    showMe(response, logged = false, page = 0) {
         this.meService
-            .getWorkplaces()
+            .getWorkplaces(page)
             .then((workplaces) => {
             console.log(workplaces);
             return workplaces;
@@ -34,6 +34,10 @@ let MeController = class MeController {
             console.log('is logged:', logged);
             response.render('index', { workplaces: workplaces, logged: logged });
         });
+    }
+    async getWorkplace(page = 0) {
+        const workplaces = await this.meService.getWorkplaces(page);
+        return workplaces;
     }
     createWorkplace(workplace) {
         this.meService.addWorkplace(workplace);
@@ -58,15 +62,42 @@ __decorate([
     (0, swagger_1.ApiQuery)({
         name: 'logged',
         type: 'boolean',
-        required: false,
+        required: false
+    }),
+    (0, swagger_1.ApiQuery)({
+        description: 'Used to paginate Workplaces',
+        name: 'page',
+        type: 'number',
+        required: false
     }),
     (0, common_1.Get)('me'),
     __param(0, (0, common_1.Res)()),
-    __param(1, (0, common_1.Query)('logged', common_1.ParseBoolPipe)),
+    __param(1, (0, common_1.Query)('logged')),
+    __param(2, (0, common_1.Query)('page')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object, Boolean, Object]),
     __metadata("design:returntype", void 0)
 ], MeController.prototype, "showMe", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({
+        summary: 'Get workplaces',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Workplaces successfully received',
+    }),
+    (0, swagger_1.ApiQuery)({
+        description: 'Used to paginate Workplaces',
+        name: 'page',
+        type: 'number',
+        required: false
+    }),
+    (0, common_1.Get)('workplace'),
+    __param(0, (0, common_1.Query)('page')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], MeController.prototype, "getWorkplace", null);
 __decorate([
     (0, swagger_1.ApiOperation)({
         summary: 'Create new WorkPlace',

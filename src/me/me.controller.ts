@@ -39,15 +39,22 @@ export class MeController {
   @ApiQuery({
     name: 'logged',
     type: 'boolean',
-    required: false, // Не работает
+    required: false
+  })
+  @ApiQuery({
+    description: 'Used to paginate Workplaces',
+    name: 'page',
+    type: 'number',
+    required: false
   })
   @Get('me')
   showMe(
     @Res() response: Response,
-    @Query('logged', ParseBoolPipe) logged = false,
+    @Query('logged') logged: boolean = false,
+    @Query('page') page = 0
   ) {
     this.meService
-      .getWorkplaces()
+      .getWorkplaces(page)
       .then((workplaces) => {
         console.log(workplaces);
         return workplaces;
@@ -58,7 +65,26 @@ export class MeController {
         response.render('index', { workplaces: workplaces, logged: logged });
       });
   }
-  // ---------------------------------------------------------------------------------
+
+  @ApiOperation({
+    summary: 'Get workplaces',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Workplaces successfully received',
+  })
+  @ApiQuery({
+    description: 'Used to paginate Workplaces',
+    name: 'page',
+    type: 'number',
+    required: false
+  })
+  @Get('workplace')
+  async getWorkplace(@Query('page') page = 0) {
+    const workplaces = await this.meService.getWorkplaces(page);
+    return workplaces;
+  }
+
   @ApiOperation({
     summary: 'Create new WorkPlace',
   })
@@ -77,7 +103,7 @@ export class MeController {
   createWorkplace(@Body() workplace: WorkPlaceDto) {
     this.meService.addWorkplace(workplace);
   }
-  // ---------------------------------------------------------------------------------
+
   @ApiOperation({
     summary: 'Delete an existing WorkPlace',
   })

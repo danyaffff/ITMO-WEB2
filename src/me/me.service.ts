@@ -8,8 +8,21 @@ export class MeService {
 
   constructor(private prisma: PrismaService) {}
 
-  async getWorkplaces(): Promise<WorkPlace[]> {
-    return this.prisma.workPlace.findMany();
+  pageSize = 5;
+
+  async getWorkplaces(page: number): Promise<WorkPlace[]> {
+    if (!page || page < 0) {
+      console.log('something went wrong:', page);
+      return this.prisma.workPlace.findMany();
+    } else {
+      const skip = page * this.pageSize;
+      const take = this.pageSize;
+      console.log('page:', page, 'skip:', skip, 'take:', take);
+      return this.prisma.workPlace.findMany({
+        skip: skip,
+        take: take
+      });
+    }
   }
 
   async addWorkplace(workplace: WorkPlaceDto) {

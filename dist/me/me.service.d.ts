@@ -4,7 +4,8 @@ import { WorkPlaceDto } from './workplace.dto';
 export declare class MeService {
     private prisma;
     constructor(prisma: PrismaService);
-    getWorkplaces(): Promise<WorkPlace[]>;
+    pageSize: number;
+    getWorkplaces(page: number): Promise<WorkPlace[]>;
     addWorkplace(workplace: WorkPlaceDto): Promise<void>;
     deleteWorkplace(name: string): Promise<void>;
 }

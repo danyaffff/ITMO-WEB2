@@ -15,9 +15,25 @@ const common_1 = require("@nestjs/common");
 let MeService = class MeService {
     constructor(prisma) {
         this.prisma = prisma;
+        this.pageSize = 5;
     }
-    async getWorkplaces() {
-        return this.prisma.workPlace.findMany();
+    async getWorkplaces(page) {
+        if (!page || page < 0) {
+            console.log('something went wrong:', page);
+            return this.prisma.workPlace.findMany();
+        }
+        else {
+            const skip = page * this.pageSize;
+            const take = this.pageSize;
+            console.log('page:', page, 'skip:', skip, 'take:', take);
+            return this.prisma.workPlace.findMany({
+                skip: skip,
+                take: take,
+                orderBy: {
+                    id: 'asc'
+                }
+            });
+        }
     }
     async addWorkplace(workplace) {
         console.log('sent:', workplace);
