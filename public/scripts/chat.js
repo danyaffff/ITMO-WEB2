@@ -1,10 +1,19 @@
 const message = document.getElementById('message');
 const messages = document.getElementById('messages');
 
+message.addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    send();
+  }
+});
+
 const chatSocket = io('/chat');
 
 function send() {
   chatSocket.emit('message', message.value);
+  message.value = '';
+  message.focus();
 }
 
 chatSocket.on('connect', () => {
