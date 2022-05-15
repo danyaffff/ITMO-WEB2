@@ -1,21 +1,21 @@
 const message = document.getElementById('message');
 const messages = document.getElementById('messages');
 
-const socket = io();
+const chatSocket = io('/chat');
 
 function send() {
-  socket.emit('message', message.value);
+  chatSocket.emit('message', message.value);
 }
 
-socket.on('connect', () => {
+chatSocket.on('connect', () => {
   console.log('socket connected');
 });
 
-socket.on('disconnect', () => {
+chatSocket.on('disconnect', () => {
   console.log('socket disconnected');
 });
 
-socket.on('message', (message) => {
+chatSocket.on('message', (message) => {
   console.log('received:', message);
   receiveMessage(message);
 });
