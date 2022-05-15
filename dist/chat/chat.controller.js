@@ -18,6 +18,10 @@ let ChatController = class ChatController {
     }
 };
 __decorate([
+    (0, swagger_1.ApiOperation)({
+        summary: 'Enter chat',
+        description: 'do it at your own risk!'
+    }),
     (0, common_1.Get)('chat'),
     (0, common_1.Render)('chat'),
     __metadata("design:type", Function),
